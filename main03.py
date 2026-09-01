@@ -85,11 +85,25 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # === 모델별 성능 비교 ==== (유방암 데이터)
 
-for m in [LogisticRegression(max_iter=500), KNeighborsClassifier(n_neighbors=3), SVC()] :
-    pipe = make_pipeline(StandardScaler(), m)
-    pipe.fit(X_train, y_train)
-    y_pred = pipe.predict(X_test)
-    score = pipe.score(X_test, y_test)
+# 내가 했던 것
+# for m in [LogisticRegression(max_iter=500), KNeighborsClassifier(n_neighbors=3), SVC()] :
+#     pipe = make_pipeline(StandardScaler(), m)
+#     pipe.fit(X_train, y_train)
+#     y_pred = pipe.predict(X_test)
+#     score = pipe.score(X_test, y_test)
+#     accu_score = accuracy_score(y_test, y_pred)
+#     print(f'{type(m).__name__} - score:{score:.2f}, accu_score:{accu_score:.2f}')
+
+# 강의에서 들은 것
+models = {'LogisticRegression': make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000))
+    , 'KNeighborsClassifier': make_pipeline(StandardScaler(), KNeighborsClassifier(n_neighbors=5))
+    , 'SVC': make_pipeline(StandardScaler(), SVC())}
+
+for model_name, model_pipeline in models.items():
+    model_pipeline.fit(X_train, y_train)
+    y_pred = model_pipeline.predict(X_test)
+    score = model_pipeline.score(X_test, y_test)
     accu_score = accuracy_score(y_test, y_pred)
-    print(f'{type(m).__name__} - score:{score:.2f}, accu_score:{accu_score:.2f}')
+    print(f'{model_name} - score:{score:.2f}, accu_score:{accu_score:.2f}')
+
 
