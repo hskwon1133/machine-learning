@@ -34,9 +34,9 @@ import numpy as np
 
 #블렌딩
 
-# a = cv2.imread('./images/53.png')
+a = cv2.imread('./images/53.png')
 # b = cv2.imread('./images/cosmos.jpg')
-# a = cv2.resize(a, (800,500), interpolation=cv2.INTER_AREA)
+a = cv2.resize(a, (800,500), interpolation=cv2.INTER_AREA)
 # b = cv2.resize(b, (800,500), interpolation=cv2.INTER_AREA)
 #
 # result = cv2.addWeighted(a,0.8, b,0.2,0.5) #사진1, 사진1가중치, 사진2, 사진2가중치, 전체밝기보정값(명도)
@@ -47,14 +47,39 @@ import numpy as np
 # cv2.destroyAllWindows()
 
 #비트연산
-a = cv2.imread('./images/53.png', cv2.IMREAD_GRAYSCALE)
-b = cv2.imread('./images/cosmos.jpg', cv2.IMREAD_GRAYSCALE)
-a = cv2.resize(a, (800,500), interpolation=cv2.INTER_AREA)
-b = cv2.resize(b, (800,500), interpolation=cv2.INTER_AREA)
-# 논리연산을 썼을때 255를 넘는 경우 과하게 이미지 결과가 도출됨. (사유 설명 부탁)
-# 흰색, 검정색으로 나눠서 자르기 위함.
-# result_and = cv2.bitwise_and(a,b)
-result_and = cv2.bitwise_not(a)
-cv2.imshow('result',result_and)
+# a = cv2.imread('./images/53.png', cv2.IMREAD_GRAYSCALE)
+# b = cv2.imread('./images/cosmos.jpg', cv2.IMREAD_GRAYSCALE)
+# a = cv2.resize(a, (800,500), interpolation=cv2.INTER_AREA)
+# b = cv2.resize(b, (800,500), interpolation=cv2.INTER_AREA)
+# # 논리연산을 썼을때 255를 넘는 경우 과하게 흑백 결과가 도출됨. (사유 설명 부탁)
+# # 흰색, 검정색으로 나눠서 자르기 위함.
+# # result_and = cv2.bitwise_and(a,b)
+# result_and = cv2.bitwise_not(a)
+# cv2.imshow('result',result_and)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+#마스킹
+#마스크 : 값이 0 또는 255인 흑백이미지(opencv에서만)
+mask = np.zeros([500,800], np.uint8)
+
+w = mask.shape[0]
+h = mask.shape[1]
+center = (h//2, w//2)
+#start_point랑 end_point를 구하는 연산 방법 알려줘
+start_point = (100,100)
+end_point = (700,400)
+
+cv2.circle(mask,center,250,255,-1)  #이미지, 중심점, 반지름, 색, 선두께 # mask 이미지를, 정중앙에 센터를 잡고, 반지를 100으로 흰색 원을 채워줘.
+cv2.rectangle(mask, start_point, end_point, 255, -1)
+
+result = cv2.bitwise_and(a,mask)
+
+cv2.imshow('a',a)
+cv2.imshow('mask',mask)
+cv2.imshow('result',result)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+
+
