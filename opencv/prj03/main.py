@@ -1,7 +1,7 @@
 import cv2
 
 # 이미지 불러와서 작업 후 저장하기
-# img = cv2.imread('images/sample.png', cv2.IMREAD_COLOR)
+# img = cv2.imread('images/53.png', cv2.IMREAD_COLOR)
 #
 # print(img) # image가 none일수록 방어가 가능하면 더 좋음. 필요하면 'img가 none이면 예외처리 명령
 # print(img.shape)
