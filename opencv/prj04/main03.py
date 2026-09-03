@@ -97,28 +97,104 @@ import numpy as np
 # result = cv2.bitwise_and(rgb, rgb, mask=mask)
 # 이 결과값은 초록색을 살리려고 하였지만, HSV 기준에서는 그린이 아님.
 
-img_bgr = cv2.imread('images/31.jpg')
-img_bgr = cv2.resize(img_bgr, (500, 500), interpolation=cv2.INTER_AREA) #가로, 세로
-img_hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
-
-lower = np.array([36, 22, 23])
-upper = np.array([110, 255, 255])
-mask = cv2.inRange(img_hsv, lower, upper) #target, lower하한값, upper상한값
-mask_2 = cv2.bitwise_not(mask)
-result = cv2.bitwise_and(img_bgr, img_bgr, mask=mask)
-result1 = cv2.bitwise_and(img_bgr, img_bgr, mask=mask_2)
-# RGB의 경우 예를 들어 주황색을 찾기가 어려움, 근데 HSV는 찾기 쉬움.
-# 사이트(http://pseudopencv.site/utilities/hsvcolormask/) 내에 파일을 넣어서 HSV 조절하면 range 코드 생성됨.
-# HSV를 활용해서 mask 만들기
-
-cv2.imshow('img_bgr and img_bgr', result)
-cv2.imshow('not', result1)
-cv2.imshow('mask', mask)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# img_bgr = cv2.imread('images/31.jpg')
+# img_bgr = cv2.resize(img_bgr, (500, 500), interpolation=cv2.INTER_AREA) #가로, 세로
+# img_hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
+#
+# lower = np.array([36, 22, 23])
+# upper = np.array([110, 255, 255])
+# mask = cv2.inRange(img_hsv, lower, upper) #target, lower하한값, upper상한값
+# mask_2 = cv2.bitwise_not(mask)
+# result = cv2.bitwise_and(img_bgr, img_bgr, mask=mask)
+# result1 = cv2.bitwise_and(img_bgr, img_bgr, mask=mask_2)
+# # RGB의 경우 예를 들어 주황색을 찾기가 어려움, 근데 HSV는 찾기 쉬움.
+# # 사이트(http://pseudopencv.site/utilities/hsvcolormask/) 내에 파일을 넣어서 HSV 조절하면 range 코드 생성됨.
+# # HSV를 활용해서 mask 만들기
+#
+# cv2.imshow('img_bgr and img_bgr', result)
+# cv2.imshow('not', result1)
+# cv2.imshow('mask', mask)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
 
 # 흑백은 채널1, 컬러는 채널3
 # 이미지는 8비트이기 떄문에 RGB, BGR은 0~255까지. uint8 형식이어야함
 # 색상정보는 후에 HSV로 볼거임
 # BGR, RGB, HSV .. 컬러에 대한 종류는 이게 다임?
 # 기하학 변경은 데이터 증감을 위해서
+
+#연습하기
+img_bgr = cv2.imread('images/31.jpg') #, cv2.IMREAD_GRAYSCALE
+red = cv2.imread('images/red.png')
+img_bgr = cv2.resize(img_bgr, (500, 500), interpolation=cv2.INTER_AREA) #가로, 세로
+red = cv2.resize(red, (500, 500), interpolation=cv2.INTER_AREA)
+img_hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
+h, w=  img_bgr.shape[:2]
+
+lower = np.array([36, 22, 23])
+upper = np.array([110, 255, 255])
+
+mask  = cv2.inRange(img_hsv, lower, upper)
+mask_inv =  cv2.bitwise_not(mask)
+# cv2.circle(mask, (w//2, h//2), 100, 255, -1)
+result = cv2.bitwise_and(img_bgr, img_bgr, mask=mask)
+result_2 = cv2.bitwise_and(img_bgr, img_bgr, mask=mask_inv)
+result_3 = cv2.bitwise_and(red, red, mask=mask)
+
+result_4 = cv2.bitwise_or(result_2,result_3)
+
+# cv2.imshow('img_bgr', img_bgr) # img 원본
+# cv2.imshow('red', red) # red 원본
+# cv2.imshow('mask', mask) # img 원본에서 파란머리만 흰색, 나머지는 흑백
+# cv2.imshow('result', result) # img 원본에서 mask 흰색부분만 도출, 파란머리 나옴
+# cv2.imshow('mask', mask_inv) # img 원본에서 파란머리만 흑백, 나머지는 흰색
+# cv2.imshow('result_2', result_2) # img 원본에서 mask 흰색부분만 도출, 파란머리 외 부분 나옴
+# cv2.imshow('result_3', result_3) # red 원본에서 mask 흰색 부분만 도출, 파란머리 외 부분 빨간머리로
+cv2.imshow('result_4', result_4) # bitwise_or 조건을 통해서 result_2에 파란머리를 빨간머리로 변경.
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
